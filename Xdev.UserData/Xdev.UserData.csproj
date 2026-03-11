@@ -1,0 +1,128 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net461;net462;net47;net471;net472;net481;net48;netcoreapp3.1;net5.0;net6.0;net7.0;net8.0;net9.0;net10.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+		<AssemblyName>UserInfoClient</AssemblyName>
+		<RootNamespace>UserInfoClient</RootNamespace>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageId>Xdev.UserData</PackageId>
+		<Title>Xdev.UserData</Title>
+		<Version>1.0.0</Version>
+		<Authors>Хачапури dev</Authors>
+		<Company>Хачапури dev</Company>
+		<Description>Библиотека для получения информации о пользователе от PHP API / Library for retrieving user information from PHP API</Description>
+		<Copyright>Copiright Хачапури dev © 2026</Copyright>
+		<PackageProjectUrl>https://github.com/xachapyri-dev/Xdev-UserData-csharp</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/xachapyri-dev</RepositoryUrl>
+		<PackageTags>user-info;php-api;client;http;json</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+		<!-- Важные настройки для компиляции -->
+		<LangVersion>latest</LangVersion>
+		<Nullable>disable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\UserInfoClient.xml</DocumentationFile>
+
+		<!-- Отключаем автоматическое включение файлов -->
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+		<EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+
+		<!-- Настройки выходных файлов -->
+		<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+		<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+		<OutputPath>bin\$(Configuration)\</OutputPath>
+		<AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+
+		<!-- Подавление предупреждений -->
+		<NoWarn>1701;1702;1591;CS0117;NU5105;NU1701</NoWarn>
+	</PropertyGroup>
+
+	<!-- Условные символы компиляции -->
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('net4'))">
+		<DefineConstants>$(DefineConstants);NETFRAMEWORK</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('netcoreapp'))">
+		<DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('net5')) or $(TargetFramework.StartsWith('net6')) or $(TargetFramework.StartsWith('net7')) or $(TargetFramework.StartsWith('net8')) or $(TargetFramework.StartsWith('net9')) or $(TargetFramework.StartsWith('net10'))">
+		<DefineConstants>$(DefineConstants);NET</DefineConstants>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(TargetFramework.StartsWith('netstandard'))">
+		<DefineConstants>$(DefineConstants);NETSTANDARD</DefineConstants>
+	</PropertyGroup>
+
+	<!-- Явно указываем файлы для компиляции -->
+	<ItemGroup>
+		<Compile Include="UserDataWeb.cs" />
+	</ItemGroup>
+
+	<!-- Базовые зависимости -->
+	<ItemGroup>
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+	</ItemGroup>
+
+	<!-- .NET Framework 4.x -->
+	<ItemGroup Condition="$(TargetFramework.StartsWith('net4'))">
+		<Reference Include="System.Web.Extensions" />
+		<Reference Include="System.Net.Http" />
+		<Reference Include="System" />
+		<Reference Include="System.Core" />
+		<Reference Include="Microsoft.CSharp" />
+	</ItemGroup>
+
+	<!-- .NET Core / .NET 5+ / .NET Standard -->
+	<ItemGroup Condition="!$(TargetFramework.StartsWith('net4'))">
+		<!-- System.Text.Json для всех современных платформ -->
+		<PackageReference Include="System.Text.Json" Version="8.0.5" />
+
+		<!-- Для .NET Standard добавляем дополнительные зависимости -->
+		<PackageReference Include="System.Memory" Version="4.5.5" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="System.Buffers" Version="4.5.1" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" Condition="'$(TargetFramework)' == 'netstandard2.0'" />
+	</ItemGroup>
+
+	<!-- .NET 5+ дополнительные зависимости -->
+	<ItemGroup Condition="'$(TargetFramework)' == 'net5.0' or '$(TargetFramework)' == 'net6.0' or '$(TargetFramework)' == 'net7.0' or '$(TargetFramework)' == 'net8.0' or '$(TargetFramework)' == 'net9.0' or '$(TargetFramework)' == 'net10.0'">
+		<PackageReference Include="System.Net.Http.Json" Version="8.0.1" />
+	</ItemGroup>
+
+	<!-- Настройки для Debug -->
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>full</DebugType>
+		<Optimize>false</Optimize>
+		<DefineConstants>$(DefineConstants);DEBUG;TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+	</PropertyGroup>
+
+	<!-- Настройки для Release -->
+	<PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+		<DebugSymbols>true</DebugSymbols>
+		<DebugType>pdbonly</DebugType>
+		<Optimize>true</Optimize>
+		<DefineConstants>$(DefineConstants);TRACE</DefineConstants>
+		<ErrorReport>prompt</ErrorReport>
+		<WarningLevel>4</WarningLevel>
+		<GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Folder Include="Properties\" />
+	</ItemGroup>
+
+	<!-- Цели сборки -->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="echo Build completed for $(TargetFramework)" />
+	</Target>
+
+	<Target Name="CustomClean" BeforeTargets="CoreClean">
+		<RemoveDir Directories="$(BaseIntermediateOutputPath);$(OutputPath)" />
+	</Target>
+
+</Project>
