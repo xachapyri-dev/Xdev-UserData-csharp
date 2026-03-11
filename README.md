@@ -4,12 +4,6 @@
   <h3>Библиотека для получения информации о пользователе через PHP API</h3>
   
   <p>
-    <a href="https://www.nuget.org/packages/Xdev.UserData/">
-      <img src="https://img.shields.io/nuget/v/Xdev.UserData.svg" alt="NuGet Version">
-    </a>
-    <a href="https://www.nuget.org/packages/Xdev.UserData/">
-      <img src="https://img.shields.io/nuget/dt/Xdev.UserData.svg" alt="NuGet Downloads">
-    </a>
     <a href="https://github.com/xachapyri-dev/Xdev-UserData-csharp/blob/main/LICENSE">
       <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
     </a>
